@@ -1,7 +1,6 @@
 //SURSA:  lighthouse3D:  http://www.lighthouse3d.com/tutorials/glut-tutorial/keyboard-example-moving-around-the-world/ 
 
 #include <gl/freeglut.h>
-#include <math.h>
 #include "Colors.h"
 #include "movingObject.h"
 #include "EnemyCar.h"
@@ -10,16 +9,7 @@
 #include "SeparatoroWhiteLines.h"
 #include "GameState.h"
 #include "GameOver.h"
-
-
-// angle of rotation for the camera direction
-float angle = 0.0;
-// actual vector representing the camera's direction
-float lx = 0.0f, lz = -1.0f;
-// XZ position of the camera
-#define INITIAL_Z 5.0f;
-float x = 2.5f, z = INITIAL_Z;
-float y = 1.0f;
+#include "Player.h"
 
 void changeSize(int w, int h)
 {
@@ -51,7 +41,7 @@ std::vector<movingObject *> toDrawObjects;
 void renderScene(void) {
 
 	switch (GameState::getInstance()->getState()) {
-	case State::Started: {
+	case State::Started: {		
 		if (time(NULL) % 10 == 0) {
 			if (rand() % 5 == 0) {
 				EnemyCar* enemy = new EnemyCar(-3 + (rand() % 3) * 5.5f, 0.0f, -75.0f);
@@ -67,14 +57,34 @@ void renderScene(void) {
 		// Reset transformations
 		glLoadIdentity();
 		// Set the camera
-		gluLookAt(x, y, z,
-			x + lx, y, z + lz,
-			0.0f, y, 0.0f);
+		gluLookAt(
+			Player::getInstance()->getX(),
+			Player::getInstance()->getY(),
+			Player::getInstance()->getZ(),
+			Player::getInstance()->getObX(),
+			Player::getInstance()->getObY(),
+			Player::getInstance()->getObZ(),
+			0.0f,
+			Player::getInstance()->getY(),
+			0.0f);
 
-		// Current Player
+
+		// HUD?
+		 
+		//Colors::getInstance()->setColor(Shade::Blue);
+		//glPushMatrix();
+		//glTranslatef(Player::getInstance()->getX() - 5.5, 0.0f, 6.1f);
+		//glutSolidCube(1);
+		//glPopMatrix();
+
+		//RenderString(Player::getInstance()->getObX(), Player::getInstance()->getObY()+1.5f, GLUT_BITMAP_HELVETICA_18, "Salut!");
+
+
+		// Current Player Car
+		// 6.1f = Initial_Z + Player Car Z + Small Number
 		Colors::getInstance()->setColor(Shade::Player_Car);
 		glPushMatrix();
-		glTranslatef(x, 0.0f, 6.1f);
+		glTranslatef(Player::getInstance()->getX(), 0.0f, 6.1f);
 		glutSolidCube(1);
 		glPopMatrix();
 
@@ -95,6 +105,7 @@ void renderScene(void) {
 	}
 	}
 
+
 	glutSwapBuffers();
 }
 
@@ -102,17 +113,10 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 {
 	switch (key) {
 	case 'l':
-		angle -= 0.01f;
-		lx = sin(angle);
-		lz = -cos(angle);
+		Player::getInstance()->lookAroundLeft();
 		break;
 	case 'v':
-		y = 2.5f;
-		z += 3.5;
-		if (z > 15.5) {
-			z = INITIAL_Z;
-			y = 1.0f;
-		}
+		Player::getInstance()->changeCamera();
 		break;
 	}
 	if (key == 27)
@@ -125,10 +129,10 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 	switch (key) {
 	case GLUT_KEY_LEFT:
-		x -= 5.5;
+		Player::getInstance()->goLeft();
 		break;
 	case GLUT_KEY_RIGHT:
-		x += 5.5;
+		Player::getInstance()->goRight();
 		break;
 	case GLUT_KEY_UP:
 		movingObject::move_speed += 0.1f;

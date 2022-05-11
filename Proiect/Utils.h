@@ -10,3 +10,11 @@ void drawGroundObject(float leftestPoint, float rightestPoint, float nearestPoin
 		glVertex3f(rightestPoint, y, nearestPoint);
 	glEnd();
 }
+
+
+void RenderString(float x, float y, void* font, std::string to_render, Shade shade = Shade::Black)
+{
+	Colors::getInstance()->setColor(shade);
+	glRasterPos2f(x, y);
+	glutBitmapString(font, (const unsigned char*)to_render.c_str());
+}
