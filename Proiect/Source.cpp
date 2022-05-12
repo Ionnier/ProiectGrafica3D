@@ -82,6 +82,18 @@ void renderScene(void) {
 
 		// Objects
 		for (int i = 0; i < toDrawObjects.size(); i++) {
+			EnemyCar* car = dynamic_cast<EnemyCar*>(toDrawObjects[i]);
+			if (car != NULL) {
+				float playerZ = Player::getInstance()->getZ();
+				float playerX = Player::getInstance()->getX();
+				choordinates_vector car_pos = car->get_position();
+				if (position_in_range(playerX, car_pos.x, 2)) {
+					if (position_in_range(INITIAL_Z, car_pos.z, 0.5)) {
+						GameState::getInstance()->setGameOver(Reason::None);
+					}
+				}
+				//if(toDrawObjects[i]->)
+			}
 			if (toDrawObjects[i]->draw() == false) {
 				toDrawObjects.erase(toDrawObjects.begin() + i);
 			}
