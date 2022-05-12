@@ -1,7 +1,7 @@
 #pragma once
 #include "movingObject.h"
 #include "Colors.h"
-#include "Utils.h"
+#include "Ground.h"
 
 extern std::vector<movingObject*> toDrawObjects;
 
@@ -29,6 +29,15 @@ public:
 			return false;
 		}
 		return true;
+	}
+private:
+		void drawGroundObject(float leftestPoint, float rightestPoint, float nearestPoint, float fartestPoint, float y = 0.0f) {
+		glBegin(GL_QUADS);
+		glVertex3f(leftestPoint, y, nearestPoint);
+		glVertex3f(leftestPoint, y, fartestPoint);
+		glVertex3f(rightestPoint, y, fartestPoint);
+		glVertex3f(rightestPoint, y, nearestPoint);
+		glEnd();
 	}
 };
 float SeparatorWhiteLines::height = 2.0f;

@@ -1,5 +1,6 @@
 #pragma once
 #include<gl/freeglut.h>
+#include "Utils2.h"
 
 enum class State { Started, Game_Over, Main_Menu, Stats };
 enum class Reason { Police, Crash, Cold, None };
@@ -51,8 +52,10 @@ public:
         //mciSendString(L"open \".\\sunete\\trafic.mp3\" type mpegvideo alias sunet_ambient", NULL, 0, NULL);
         //mciSendString(L"play sunet_ambient repeat", NULL, 0, NULL);
         //schimba_muzica();
-        //rsj = 0; rdj = 0; rss = 0; rds = 0.0; j = 0.0; ok = 1; progres = 0; temp_mancare = 100; 
-         this->current_state = State::Started;
+        //rsj = 0; rdj = 0; rss = 0; rds = 0.0; j = 0.0; ok = 1; progres = 0; temp_mancare = 100;
+        resetGame();
+        this->game_over_reason = Reason::None;
+        this->current_state = State::Started;
         //GameData::getInstance()->prepare_time_start();
     }
 

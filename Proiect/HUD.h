@@ -3,6 +3,7 @@
 #include "GameData.h"
 #include "Colors.h"
 #include "Utils.h"
+#include "GameOver.h"
 
 class HUD {
 private:
@@ -39,6 +40,17 @@ public:
 		switchTo2D();
 
 		drawCurrentStatus();
+
+		resetTo3D();
+	}
+
+	static void drawGameOver() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
+		glPushMatrix();
+		switchTo2D();
+
+		GameOver::drawGameOver();
 
 		resetTo3D();
 	}

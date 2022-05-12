@@ -159,6 +159,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeparatoroWhiteLines.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Utils2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

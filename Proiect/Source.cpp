@@ -1,19 +1,18 @@
 //SURSA:  lighthouse3D:  http://www.lighthouse3d.com/tutorials/glut-tutorial/keyboard-example-moving-around-the-world/ 
 
 #include <gl/freeglut.h>
-#include "Colors.h"
-#include "movingObject.h"
-#include "EnemyCar.h"
 #include <iostream>
 #include "Ground.h"
-#include "SeparatoroWhiteLines.h"
-#include "GameState.h"
-#include "GameOver.h"
+#include "EnemyCar.h"
 #include "Player.h"
+#include "GameState.h"
 #include "HUD.h"
-#include "GameData.h"
+#include "GameOver.h"
+#include "SeparatoroWhiteLines.h"
+#include "Utils2.h"
 
-bool debugging = true;
+
+bool debugging = false;
 
 void changeSize(int w, int h)
 {
@@ -108,7 +107,11 @@ void renderScene(void) {
 				choordinates_vector car_pos = car->get_position();
 				if (position_in_range(playerX, car_pos.x, 2)) {
 					if (position_in_range(INITIAL_Z, car_pos.z, 0.5)) {
-						if(!debugging) GameState::getInstance()->setGameOver(Reason::None);
+						if (!debugging) {
+							GameState::getInstance()->setGameOver(Reason::Crash);
+							toDrawObjects.clear();
+							break;
+						}
 					}
 				}
 			}
@@ -121,7 +124,8 @@ void renderScene(void) {
 		break;
 	}
 	case State::Game_Over: {
-		deseneaza_ecran_game_over();
+		glClear(GL_COLOR_BUFFER_BIT);
+		HUD::drawGameOver();
 		break;
 	}
 	}
@@ -132,52 +136,70 @@ void renderScene(void) {
 
 void processNormalKeys(unsigned char key, int xx, int yy)
 {
-	switch (key) {
-	case 'l':
-		Player::getInstance()->lookAroundLeft();
-		break;
-	case 'v':
-		Player::getInstance()->changeCamera();
+
+	switch (GameState::getInstance()->getState()) {
+	case State::Game_Over: {
+		switch (key) {
+		case 13:
+			GameOver::handleGameOver();
+			break;
+		}
 		break;
 	}
-	if (key == 27)
-		exit(0);
+	case State::Started: {
+		switch (key) {
+		case 'l':
+			Player::getInstance()->lookAroundLeft();
+			break;
+		case 'v':
+			Player::getInstance()->changeCamera();
+			break;
+		}
+		if (key == 27)
+			exit(0);
+		break;
+	}
+	}
 }
 
 void processSpecialKeys(int key, int xx, int yy) {
-
-	float fraction = 0.1f;
-
-	switch (key) {
-	case GLUT_KEY_LEFT:
-		Player::getInstance()->goLeft();
-		break;
-	case GLUT_KEY_RIGHT:
-		Player::getInstance()->goRight();
-		break;
-	case GLUT_KEY_UP:
-		movingObject::move_speed += 0.1f;
-		break;
-	case GLUT_KEY_DOWN:
-		movingObject::move_speed -= 0.1f;
-		break;
+	switch (GameState::getInstance()->getState()) {
+		case State::Game_Over:{
+			switch (key) {
+			case GLUT_KEY_LEFT:
+				GameOver::decreaseGameOverOptions();
+				break;
+			case GLUT_KEY_RIGHT:
+				GameOver::increaseGameOverOptions();
+				break;
+			}
+			break;
+		}
+		case State::Started: {
+			switch (key) {
+			case GLUT_KEY_LEFT:
+				Player::getInstance()->goLeft();
+				break;
+			case GLUT_KEY_RIGHT:
+				Player::getInstance()->goRight();
+				break;
+			case GLUT_KEY_UP:
+				movingObject::move_speed += 0.1f;
+				break;
+			case GLUT_KEY_DOWN:
+				movingObject::move_speed -= 0.1f;
+				break;
+			}
+		}
 	}
 }
 
-
-
 int main(int argc, char** argv) {
 	srand(time(0));
+	GameOver::initialiseGameOverOptions();
+	resetGame();
 	GameState::getInstance()->setStartGame();
-	// Create Separator lines
-	float drawObjects = Ground::furtherestPoint;
-	while (drawObjects <= 10.0f) {
-		// Between left lane and middle lane
-		toDrawObjects.push_back(new SeparatorWhiteLines(Ground::middle_point_left, drawObjects));
-		// Between and middle lane and right lane
-		toDrawObjects.push_back(new SeparatorWhiteLines(Ground::right_left_point, drawObjects));
-		drawObjects += (10.0f);
-	}
+	
 	// init GLUT and create window
 
 	glutInit(&argc, argv);

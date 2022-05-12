@@ -2,6 +2,7 @@
 #include <math.h>
 #include "Ground.h"
 
+
 #define INITIAL_Z 5.0f
 class Player {
 private:
@@ -21,6 +22,14 @@ private:
 		z = INITIAL_Z;
 	}
 public:
+	void resetPlayer() {
+		lx = 0.0f;
+		lz = -1.0f;
+		ly = 0.0f;
+		x = 2.5f;
+		y = 1.0f;
+		z = INITIAL_Z;
+	}
 	static Player* getInstance() {
 		if (!instance)
 			instance = new Player;
