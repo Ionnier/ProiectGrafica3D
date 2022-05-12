@@ -16,5 +16,8 @@
     <ClInclude Include="SeparatoroWhiteLines.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils2.h" />
+    <ClInclude Include="GameData.h" />
+    <ClInclude Include="Colors.h" />
+    <ClInclude Include="Sun.h" />
   </ItemGroup>
 </Project>

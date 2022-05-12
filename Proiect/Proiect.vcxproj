@@ -94,7 +94,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\Librarii\glew-2.1.0\lib\Release\Win32;$(SolutionDir)..\Librarii\freeglut\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;opengl32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -158,6 +158,7 @@
     <ClInclude Include="movingObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeparatoroWhiteLines.h" />
+    <ClInclude Include="Sun.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils2.h" />
   </ItemGroup>
