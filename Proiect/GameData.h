@@ -1,11 +1,11 @@
 #pragma once
-enum class Status { FREE_ROAM, WAITING_FOR_ORDER, DELIVERING_ORDER};
+enum class Status { FREE_ROAM, WAITING_FOR_ORDER, DELIVERING_ORDER, NONE};
 class GameData {
 private:
 	static GameData* instance;
 	Status status;
 	GameData() {
-		status = Status::FREE_ROAM;
+		status = Status::NONE;
 	}
 public:
 	static float WINDOW_HEIGHT;
@@ -16,6 +16,7 @@ public:
 		return instance;
 	}
 	Status getStatus() { return status; }
+	void setStatus(Status status) { this->status=status; }
 };
 GameData* GameData::instance = 0;
 float GameData::WINDOW_HEIGHT = 720.0f;

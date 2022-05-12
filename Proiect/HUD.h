@@ -4,6 +4,7 @@
 #include "Colors.h"
 #include "Utils.h"
 #include "GameOver.h"
+#include "MainMenu.h"
 
 class HUD {
 private:
@@ -51,6 +52,14 @@ public:
 		switchTo2D();
 
 		GameOver::drawGameOver();
+
+		resetTo3D();
+	}
+
+	static void drawMainMenu() {
+		switchTo2D();
+
+		MainMenu::draw();
 
 		resetTo3D();
 	}

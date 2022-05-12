@@ -56,6 +56,7 @@ public:
         resetGame();
         this->game_over_reason = Reason::None;
         this->current_state = State::Started;
+        GameData::getInstance()->setStatus(Status::FREE_ROAM);
         //GameData::getInstance()->prepare_time_start();
     }
 

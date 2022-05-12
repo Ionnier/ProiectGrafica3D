@@ -5,12 +5,12 @@
 #include "Ground.h"
 #include "EnemyCar.h"
 #include "Player.h"
+#include "GameData.h"
 #include "GameState.h"
 #include "HUD.h"
 #include "GameOver.h"
 #include "SeparatoroWhiteLines.h"
 #include "Utils2.h"
-#include "GameData.h"
 #include "Sun.h"
 
 
@@ -84,7 +84,6 @@ void renderScene(void) {
 					}
 					else {
 						Player::getInstance()->goRight();
-
 					}
 				}
 
@@ -151,7 +150,10 @@ void renderScene(void) {
 			}
 		}
 
-		HUD::drawHUD();
+		if (GameState::getInstance()->getState() == State::Main_Menu)
+			HUD::drawMainMenu();
+		else 
+			HUD::drawHUD();
 		break;
 	}
 	case State::Game_Over: {
@@ -170,6 +172,17 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 {
 
 	switch (GameState::getInstance()->getState()) {
+	case State::Main_Menu: {
+		switch (key) {
+		case 13:
+			GameOver::handleGameOver();
+			break;
+		case 'v':
+			Player::getInstance()->changeCamera();
+			break;
+		}
+		break;
+	}
 	case State::Game_Over: {
 		switch (key) {
 		case 13:
@@ -196,6 +209,17 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 
 void processSpecialKeys(int key, int xx, int yy) {
 	switch (GameState::getInstance()->getState()) {
+		case State::Main_Menu: {
+			switch (key) {
+			case GLUT_KEY_LEFT:
+				MainMenu::decreaseOptions();
+				break;
+			case GLUT_KEY_RIGHT:
+				MainMenu::increaseOptions();
+				break;
+			}
+			break;
+		}
 		case State::Game_Over:{
 			switch (key) {
 			case GLUT_KEY_LEFT:
@@ -229,6 +253,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 int main(int argc, char** argv) {
 	srand(time(0));
 	GameOver::initialiseGameOverOptions();
+	MainMenu::initialise();
 	resetGame();
 	GameState::getInstance()->setMainMenu();
 	load_sun();
