@@ -54,15 +54,19 @@ public:
 		}
 	}
 
-	void goLeft() {
+	bool goLeft() {
 		if (x - 5.5 > Ground::leftest_point) {
 			x -= 5.5;
+			return true;
 		}
+		return false;
 	}
-	void goRight() {
+	bool goRight() {
 		if (x + 5.5 < Ground::right_end_point) {
 			x += 5.5;
+			return true;
 		}
+		return false;
 	}
 
 	void lookAroundLeft() {

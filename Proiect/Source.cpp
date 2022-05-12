@@ -14,7 +14,7 @@
 #include "Sun.h"
 
 
-bool debugging = false;
+bool debugging = true;
 
 void changeSize(int w, int h)
 {
@@ -46,6 +46,7 @@ std::vector<movingObject *> toDrawObjects;
 void renderScene(void) {
 
 	switch (GameState::getInstance()->getState()) {
+	case State::Main_Menu:
 	case State::Started: {	
 
 		glEnable(GL_LIGHTING);
@@ -74,9 +75,24 @@ void renderScene(void) {
 				randuri[iterator] = i;
 				iterator++;
 			}
+			
+			if (GameState::getInstance()->getState() == State::Main_Menu) {
+				float linie = -3 + rand_liber * 5.5f;
+				while (linie != Player::getInstance()->getX()) {
+					if (linie < Player::getInstance()->getX()) {
+						Player::getInstance()->goLeft();
+					}
+					else {
+						Player::getInstance()->goRight();
+
+					}
+				}
+
+			}
+			
 
 			for (int i = 0; i < 2; i++) {
-				EnemyCar* enemy = new EnemyCar(-3 + randuri[i] * 5.5f, 0.0f, -75.0f);
+				EnemyCar* enemy = new EnemyCar(-3 + randuri[i] * 5.5f, 0.0f, -75.0f);	
 				toDrawObjects.push_back(enemy);
 			}
 		}
@@ -214,7 +230,7 @@ int main(int argc, char** argv) {
 	srand(time(0));
 	GameOver::initialiseGameOverOptions();
 	resetGame();
-	GameState::getInstance()->setStartGame();
+	GameState::getInstance()->setMainMenu();
 	load_sun();
 	// Create Separator lines
 	float drawObjects = Ground::furtherestPoint;
