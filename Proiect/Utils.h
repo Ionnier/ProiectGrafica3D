@@ -18,3 +18,7 @@ void RenderString(float x, float y, std::string to_render, Shade shade = Shade::
 	glRasterPos2f(x, y);
 	glutBitmapString(font, (const unsigned char*)to_render.c_str());
 }
+
+bool position_in_range(float pos1, float pos2, float threshold) {
+	return(pos1 < pos2 + threshold && pos1 > pos2 - threshold);
+}

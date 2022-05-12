@@ -12,6 +12,7 @@ private:
 public:
 	EnemyCar(float initialX, float initialY, float initialZ) : initialX(initialX), initialY(initialY), initialZ(initialZ) {
 		positionModifier = 0.1f;
+		
 	}
 	EnemyCar(const EnemyCar& aux) : initialX(initialX), initialY(initialY), initialZ(initialZ) {
 		positionModifier = aux.positionModifier;
@@ -27,5 +28,13 @@ public:
 			return false;
 		}
 		return true;
+	}
+
+	choordinates_vector get_position() {
+		choordinates_vector res;
+		res.x = this->initialX;
+		res.y = this->initialY;
+		res.z = this->initialZ + positionModifier;
+		return(res);
 	}
 };

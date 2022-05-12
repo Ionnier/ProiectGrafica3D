@@ -11,5 +11,9 @@
     <ClInclude Include="SeparatoroWhiteLines.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="GameData.h" />
+    <ClInclude Include="Colors.h" />
   </ItemGroup>
 </Project>
