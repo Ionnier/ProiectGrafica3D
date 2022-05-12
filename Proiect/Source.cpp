@@ -13,6 +13,8 @@
 #include "HUD.h"
 #include "GameData.h"
 
+bool debugging = true;
+
 void changeSize(int w, int h)
 {
 
@@ -43,13 +45,30 @@ std::vector<movingObject *> toDrawObjects;
 void renderScene(void) {
 
 	switch (GameState::getInstance()->getState()) {
-	case State::Started: {		
-		if (time(NULL) % 10 == 0) {
-			if (rand() % 5 == 0) {
-				EnemyCar* enemy = new EnemyCar(-3 + (rand() % 3) * 5.5f, 0.0f, -75.0f);
+	case State::Started: {	
+		int counter_masini = 0;
+		for (int i = 0; i < toDrawObjects.size(); i++) {
+			EnemyCar* car = dynamic_cast<EnemyCar*>(toDrawObjects[i]);
+			if (car != NULL) {
+				counter_masini++;
+			}
+		}
+		if (counter_masini == 0) {
+			int rand_liber = rand() % 3;
+			int randuri[2], iterator = 0;
+			for (int i = 0; i < 3; i++) {
+				if (i == rand_liber) continue;
+				randuri[iterator] = i;
+				iterator++;
+			}
+
+			for (int i = 0; i < 2; i++) {
+				EnemyCar* enemy = new EnemyCar(-3 + randuri[i] * 5.5f, 0.0f, -75.0f);
 				toDrawObjects.push_back(enemy);
 			}
 		}
+
+		
 
 		// Clear Color and Depth Buffers
 
@@ -89,10 +108,9 @@ void renderScene(void) {
 				choordinates_vector car_pos = car->get_position();
 				if (position_in_range(playerX, car_pos.x, 2)) {
 					if (position_in_range(INITIAL_Z, car_pos.z, 0.5)) {
-						GameState::getInstance()->setGameOver(Reason::None);
+						if(!debugging) GameState::getInstance()->setGameOver(Reason::None);
 					}
 				}
-				//if(toDrawObjects[i]->)
 			}
 			if (toDrawObjects[i]->draw() == false) {
 				toDrawObjects.erase(toDrawObjects.begin() + i);
@@ -149,6 +167,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 
 int main(int argc, char** argv) {
+	srand(time(0));
 	GameState::getInstance()->setStartGame();
 	// Create Separator lines
 	float drawObjects = Ground::furtherestPoint;
