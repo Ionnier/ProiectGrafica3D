@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "HUD.h"
 #include "GameData.h"
+#include "Sun.h"
 
 bool debugging = true;
 
@@ -46,6 +47,18 @@ void renderScene(void) {
 
 	switch (GameState::getInstance()->getState()) {
 	case State::Started: {	
+
+		glEnable(GL_LIGHTING);
+		glEnable(GL_DEPTH_TEST);
+
+		glEnable(GL_LIGHT1);
+		GLfloat pozitial1[] = { 0.0, 20, -30, 1.0 };
+		GLfloat galben[] = {1.0, 1.0, 0.0, 0.5 };
+		glLightfv(GL_LIGHT1, GL_POSITION, pozitial1);
+		glLightfv(GL_LIGHT1, GL_SPECULAR, galben);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, galben);
+		glLightfv(GL_LIGHT1, GL_AMBIENT, galben);
+		draw_sun();
 		int counter_masini = 0;
 		for (int i = 0; i < toDrawObjects.size(); i++) {
 			EnemyCar* car = dynamic_cast<EnemyCar*>(toDrawObjects[i]);
@@ -113,6 +126,7 @@ void renderScene(void) {
 				}
 			}
 			if (toDrawObjects[i]->draw() == false) {
+				//delete(toDrawObjects[i]);
 				toDrawObjects.erase(toDrawObjects.begin() + i);
 			}
 		}
@@ -128,6 +142,7 @@ void renderScene(void) {
 
 
 	glutSwapBuffers();
+	glFlush();
 }
 
 void processNormalKeys(unsigned char key, int xx, int yy)
@@ -169,6 +184,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 int main(int argc, char** argv) {
 	srand(time(0));
 	GameState::getInstance()->setStartGame();
+	load_sun();
 	// Create Separator lines
 	float drawObjects = Ground::furtherestPoint;
 	while (drawObjects <= 10.0f) {

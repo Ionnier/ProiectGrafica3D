@@ -14,5 +14,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="GameData.h" />
+    <ClInclude Include="Colors.h" />
+    <ClInclude Include="Sun.h" />
   </ItemGroup>
 </Project>

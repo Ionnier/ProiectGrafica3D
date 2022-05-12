@@ -110,6 +110,8 @@ public:
 			return glColor4f(1.0f - getColorX(shade), 1.0f - getColorY(shade), 1.0f - getColorZ(shade), opacity);
 		}
 		else {
+			GLfloat temp1[] = { getColorX(shade), getColorY(shade), getColorZ(shade), opacity };
+			glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, temp1);
 			return glColor4f(getColorX(shade), getColorY(shade), getColorZ(shade), opacity);
 		}
 	}
