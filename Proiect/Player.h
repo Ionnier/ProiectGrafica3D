@@ -3,7 +3,6 @@
 #include "Ground.h"
 
 #define INITIAL_Z 5.0f
-
 class Player {
 private:
 	//position of the camera

@@ -10,6 +10,8 @@
 #include "GameState.h"
 #include "GameOver.h"
 #include "Player.h"
+#include "HUD.h"
+#include "GameData.h"
 
 void changeSize(int w, int h)
 {
@@ -52,7 +54,7 @@ void renderScene(void) {
 		// Clear Color and Depth Buffers
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(1, 1, 1, 1);
+		glClearColor(0.5, 0.5, 1, 1);
 
 		// Reset transformations
 		glLoadIdentity();
@@ -68,18 +70,6 @@ void renderScene(void) {
 			Player::getInstance()->getY(),
 			0.0f);
 
-
-		// HUD?
-		 
-		//Colors::getInstance()->setColor(Shade::Blue);
-		//glPushMatrix();
-		//glTranslatef(Player::getInstance()->getX() - 5.5, 0.0f, 6.1f);
-		//glutSolidCube(1);
-		//glPopMatrix();
-
-		//RenderString(Player::getInstance()->getObX(), Player::getInstance()->getObY()+1.5f, GLUT_BITMAP_HELVETICA_18, "Salut!");
-
-
 		// Current Player Car
 		// 6.1f = Initial_Z + Player Car Z + Small Number
 		Colors::getInstance()->setColor(Shade::Player_Car);
@@ -87,7 +77,6 @@ void renderScene(void) {
 		glTranslatef(Player::getInstance()->getX(), 0.0f, 6.1f);
 		glutSolidCube(1);
 		glPopMatrix();
-
 
 		Ground::draw();
 
@@ -97,6 +86,8 @@ void renderScene(void) {
 				toDrawObjects.erase(toDrawObjects.begin() + i);
 			}
 		}
+
+		HUD::drawHUD();
 		break;
 	}
 	case State::Game_Over: {
@@ -161,7 +152,7 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(1280, 720);
+	glutInitWindowSize(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT);
 	glutCreateWindow("Livreaza comanda");
 
 	// register callbacks

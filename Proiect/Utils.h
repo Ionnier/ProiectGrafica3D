@@ -12,7 +12,7 @@ void drawGroundObject(float leftestPoint, float rightestPoint, float nearestPoin
 }
 
 
-void RenderString(float x, float y, void* font, std::string to_render, Shade shade = Shade::Black)
+void RenderString(float x, float y, std::string to_render, Shade shade = Shade::Black, void* font = GLUT_BITMAP_HELVETICA_18)
 {
 	Colors::getInstance()->setColor(shade);
 	glRasterPos2f(x, y);
