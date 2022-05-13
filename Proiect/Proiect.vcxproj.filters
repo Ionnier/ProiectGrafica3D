@@ -18,7 +18,6 @@
     <ClInclude Include="Utils2.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Colors.h" />
-    <ClInclude Include="Sun.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Textures.h" />
   </ItemGroup>

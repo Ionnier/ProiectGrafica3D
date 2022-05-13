@@ -12,10 +12,9 @@
 #include "SeparatoroWhiteLines.h"
 #include "Utils2.h"
 #include "Textures.h"
-#include "Sun.h"
-
 
 bool debugging = true;
+double delay_politie = 10;
 
 void changeSize(int w, int h)
 {
@@ -55,12 +54,11 @@ void renderScene(void) {
 
 		glEnable(GL_LIGHT1);
 		GLfloat pozitial1[] = { 0.0, 20, -30, 1.0 };
-		GLfloat galben[] = {1.0, 1.0, 0.0, 0.5 };
+		GLfloat galben[] = {0.2, 0.2, 0.0, 0.5 };
 		glLightfv(GL_LIGHT1, GL_POSITION, pozitial1);
 		glLightfv(GL_LIGHT1, GL_SPECULAR, galben);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, galben);
 		glLightfv(GL_LIGHT1, GL_AMBIENT, galben);
-		draw_sun();
 		int counter_masini = 0;
 		for (int i = 0; i < toDrawObjects.size(); i++) {
 			EnemyCar* car = dynamic_cast<EnemyCar*>(toDrawObjects[i]);
@@ -136,17 +134,29 @@ void renderScene(void) {
 				float playerX = Player::getInstance()->getX();
 				choordinates_vector car_pos = car->get_position();
 				if (position_in_range(playerX, car_pos.x, 2)) {
-					if (position_in_range(INITIAL_Z, car_pos.z, 0.5)) {
-						if (!debugging) {
-							GameState::getInstance()->setGameOver(Reason::Crash);
-							toDrawObjects.clear();
-							break;
-						}
+					if (position_in_range(INITIAL_Z, car_pos.z, 0.5) && !debugging) {
+						GameState::getInstance()->setGameOver(Reason::Crash);
+						toDrawObjects.clear();
+						break;
 					}
 				}
 			}
 			if (toDrawObjects[i]->draw() == false) {
-				//delete(toDrawObjects[i]);
+				if (delay_politie >= 0) delay_politie -= 0.5;
+				if (delay_politie < 0 && dynamic_cast<EnemyCar*>(toDrawObjects[i]) != NULL) {
+					delay_politie = 10;
+					if (estePolitie) {
+						estePolitie = false;
+						urmeazaPolitie = false;
+					}
+					if (urmeazaPolitie) {
+						estePolitie = true;
+						urmeazaPolitie = false;
+					}
+					if (!estePolitie && !urmeazaPolitie && (rand() % 100 > 50)) {
+						urmeazaPolitie = true;
+					}
+				}
 				toDrawObjects.erase(toDrawObjects.begin() + i);
 			}
 		}
@@ -255,6 +265,8 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 int main(int argc, char** argv) {
 	srand(time(0));
+	estePolitie = 0;
+	urmeazaPolitie = 0;
 	GameOver::initialiseGameOverOptions();
 	MainMenu::initialise();
 	resetGame();
