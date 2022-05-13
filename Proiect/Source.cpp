@@ -12,8 +12,9 @@
 #include "SeparatoroWhiteLines.h"
 #include "Utils2.h"
 #include "Textures.h"
+#include "FileComunicator.h"
 
-bool debugging = false;
+bool debugging = true;
 double delay_politie = 10;
 
 void changeSize(int w, int h)
@@ -46,6 +47,7 @@ std::vector<movingObject *> toDrawObjects;
 void renderScene(void) {
 
 	switch (GameState::getInstance()->getState()) {
+	case State::Entering_Text:
 	case State::Delivering:
 	case State::Selecting_Order:
 	case State::Main_Menu:
@@ -77,7 +79,7 @@ void renderScene(void) {
 				iterator++;
 			}
 			
-			if (GameState::getInstance()->getState() == State::Main_Menu) {
+			if (GameState::getInstance()->getState() == State::Main_Menu || GameState::getInstance()->getState() == State::Entering_Text) {
 				float linie = -3 + rand_liber * 5.5f;
 				while (linie != Player::getInstance()->getX()) {
 					if (linie < Player::getInstance()->getX()) {
@@ -163,10 +165,11 @@ void renderScene(void) {
 			}
 		}
 
-		if (GameState::getInstance()->getState() == State::Main_Menu)
-			HUD::drawMainMenu();
-		else 
-			HUD::drawHUD();
+		switch (GameState::getInstance()->getState()) {
+		case State::Main_Menu:	HUD::drawMainMenu(); break;
+		case State::Entering_Text: HUD::drawText(); break;
+		default: HUD::drawHUD();
+		}
 		break;
 	}
 	case State::Game_Over: {
@@ -228,6 +231,16 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 			exit(0);
 		break;
 	}
+	case State::Entering_Text: {
+		switch (key) {
+		case 13:
+			GameState::getInstance()->handleEnter();
+			break;
+		default: GameState::getInstance()->enterCharacter(key);
+		}
+		break;
+	}
+					   
 	}
 }
 
@@ -286,13 +299,21 @@ void processSpecialKeys(int key, int xx, int yy) {
 	}
 }
 
+#include <thread>
+void function() {
+	while (true) {
+		std::string data = FileComunicator::getInstance()->recieveData();
+		if (data.size() > 0)
+			std::cout << "\nrecieved: " << data << std::endl;
+	}
+}
+
+std::thread thread(function);
+
 int main(int argc, char** argv) {
 	srand(time(0));
 	estePolitie = 0;
 	urmeazaPolitie = 0;
-	GameState::getInstance()->addOrder(1, "Burger", 10);
-	GameState::getInstance()->addOrder(2, "Pasta", 10);
-	GameState::getInstance()->addOrder(3, "Pizza", 10);
 	GameOver::initialiseGameOverOptions();
 	MainMenu::initialise();
 	resetGame();

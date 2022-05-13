@@ -46,6 +46,14 @@ public:
 		resetTo3D();
 	}
 
+	static void drawText() {
+		switchTo2D();
+
+		GameState::getInstance()->drawText();
+
+		resetTo3D();
+	}
+
 	static void drawGameOver() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();

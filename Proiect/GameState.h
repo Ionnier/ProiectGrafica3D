@@ -3,9 +3,10 @@
 #include "Utils2.h"
 #include "Comanda.h"
 #include <string>
+#include <fstream>
 
 enum class Status { FREE_ROAM, WAITING_FOR_ORDER, DELIVERING_ORDER, NONE };
-enum class State { Started, Game_Over, Main_Menu, Stats, Selecting_Order, Delivering };
+enum class State { Started, Game_Over, Main_Menu, Stats, Selecting_Order, Delivering, Entering_Text };
 enum class Reason { Police, Crash, Cold, None };
 
 class GameState {
@@ -14,6 +15,8 @@ private:
     State current_state;
     Reason game_over_reason;
     Status status;
+    std::string userName;
+    std::string password;
     std::vector<Comanda> comenzi;
     GameState() {
         this->setMainMenu();
@@ -21,6 +24,8 @@ private:
         activeOrder = 0;
     }
     int activeOrder;
+    bool enteringPassword = false;
+    bool isLogin;
 
     void drawOrder(int i) {
         float left_x = 0;
@@ -71,6 +76,10 @@ public:
     }
     Reason getGameOverReason() {
         return this->game_over_reason;
+    }
+    void setEnteringText(bool isLogin) {
+        this->isLogin = isLogin;
+        current_state = State::Entering_Text;
     }
 
     void toggleOrders() {
@@ -165,6 +174,55 @@ public:
     }
     void chooseOrder() {
         clearOrders(activeOrder);
+    }
+    void drawText() {
+        std::string asd = "";
+        for (int i = 0; i < password.size(); i++)
+            asd.push_back('*');
+        RenderString(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, "Username: " + userName, Shade::Black);
+        RenderString(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 15, "Password: " + asd, Shade::Black);
+
+    }
+
+    void commText(std::string type) {
+        std::string fileName = "clientSays";
+        std::ofstream f;
+        f.open(fileName);
+        std::string data = type;
+        data += userName;
+        data += " ";
+        data += password;
+        f << data;
+        f.close();
+    }
+    void handleEnter() {
+        if (password.size() == 0){
+            enteringPassword = true;
+            return;
+        }
+        enteringPassword = false;
+        if (isLogin) {
+            commText("LOGIN ");
+        }
+        else {
+            commText("REGISTER ");
+        }
+        userName.clear();
+        password.clear();
+        setMainMenu();
+    }
+
+    void enterCharacter(char c) {
+        if (enteringPassword) {
+            if (c == 8) 
+                return password.pop_back();
+            password.push_back(c);
+        }
+        else {
+            if (c == 8)
+                return userName.pop_back();
+            userName.push_back(c);
+        }
     }
 };
 GameState* GameState::instance = 0;

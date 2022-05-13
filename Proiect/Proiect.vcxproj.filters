@@ -20,5 +20,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Comanda.h" />
+    <ClInclude Include="FileComunicator.h" />
+    <ClInclude Include="ProcessLauncher.h" />
   </ItemGroup>
 </Project>

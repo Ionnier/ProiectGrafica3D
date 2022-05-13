@@ -40,15 +40,14 @@ public:
 			break;
 		}
 		case 1: {
-			exit(0);
+			GameState::getInstance()->setEnteringText(true);
 			break;
 		}
 		case 2: {
-			exit(0);
+			GameState::getInstance()->setEnteringText(false);
 			break;
 		}
 		case 3: {
-			exit(0);
 			break;
 		}
 		}
