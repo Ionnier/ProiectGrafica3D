@@ -1,6 +1,6 @@
 #pragma once
 #include <GL/freeglut.h>
-#include "GameData.h"
+#include "GameState.h"
 #include "Colors.h"
 #include "Utils.h"
 #include "GameOver.h"
@@ -12,7 +12,7 @@ private:
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
-		glOrtho(0.0f, GameData::WINDOW_WIDTH, 0.0f, GameData::WINDOW_HEIGHT, 0.0, 1.0);
+		glOrtho(0.0f, GameState::WINDOW_WIDTH, 0.0f, GameState::WINDOW_HEIGHT, 0.0, 1.0);
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glLoadIdentity();
@@ -27,13 +27,13 @@ private:
 
 	static void drawCurrentStatus() {
 		std::string toDrawString = "";
-		switch (GameData::getInstance()->getStatus()) {
+		switch (GameState::getInstance()->getStatus()) {
 		case Status::FREE_ROAM: toDrawString += "Free roaming"; break;
 		case Status::WAITING_FOR_ORDER: toDrawString += "Waiting for orders"; break;
 		case Status::DELIVERING_ORDER: toDrawString += "Delivering order"; break;
 		}
-		float initialX = GameData::WINDOW_WIDTH - (9 * toDrawString.size());
-		float initialY = GameData::WINDOW_HEIGHT - 20;
+		float initialX = GameState::WINDOW_WIDTH - (9 * toDrawString.size());
+		float initialY = GameState::WINDOW_HEIGHT - 20;
 		RenderString(initialX, initialY, toDrawString);
 	}
 public:
@@ -41,6 +41,7 @@ public:
 		switchTo2D();
 
 		drawCurrentStatus();
+		GameState::getInstance()->drawOrders();
 
 		resetTo3D();
 	}

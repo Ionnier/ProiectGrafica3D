@@ -5,12 +5,12 @@ OptiuniOnScreen mainMenuOptions;
 class MainMenu {
 public:
 	static void draw() {
-		double left_x = (3* GameData::WINDOW_WIDTH / 4);
-		double left_y = (3* GameData::WINDOW_HEIGHT / 4);
-		double right_x = (4 * GameData::WINDOW_WIDTH / 5);
-		double right_y = (4 * GameData::WINDOW_HEIGHT / 5);
+		double left_x = (3* GameState::WINDOW_WIDTH / 4);
+		double left_y = (3* GameState::WINDOW_HEIGHT / 4);
+		double right_x = (4 * GameState::WINDOW_WIDTH / 5);
+		double right_y = (4 * GameState::WINDOW_HEIGHT / 5);
 
-		RenderString(GameData::WINDOW_WIDTH / 2 - 10 * 9, 500, "Livreaza comanda");
+		RenderString(GameState::WINDOW_WIDTH / 2 - 10 * 9, 500, "Livreaza comanda");
 
 		mainMenuOptions.display_menu();
 	}

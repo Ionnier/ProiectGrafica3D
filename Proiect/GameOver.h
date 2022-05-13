@@ -1,7 +1,6 @@
 #pragma once
 #include <GL/freeglut.h>
 #include "Utils.h"
-#include "GameData.h"
 #include "Textures.h"
 
 OptiuniOnScreen gameOverOptions;
@@ -9,12 +8,12 @@ OptiuniOnScreen gameOverOptions;
 class GameOver {
 public:
 	static void drawGameOver() {
-		double left_x = (GameData::WINDOW_WIDTH / 4);
-		double left_y = (GameData::WINDOW_HEIGHT / 4);
-		double right_x = (3 * GameData::WINDOW_WIDTH / 4);
-		double right_y = (3 * GameData::WINDOW_HEIGHT / 4);
+		double left_x = (GameState::WINDOW_WIDTH / 4);
+		double left_y = (GameState::WINDOW_HEIGHT / 4);
+		double right_x = (3 * GameState::WINDOW_WIDTH / 4);
+		double right_y = (3 * GameState::WINDOW_HEIGHT / 4);
 
-		RenderString(GameData::WINDOW_WIDTH / 2 - 10 * 9, 500, "GAME OVER");
+		RenderString(GameState::WINDOW_WIDTH / 2 - 10 * 9, 500, "GAME OVER");
 
 		glEnable(GL_TEXTURE_2D);
 		switch (GameState::getInstance()->getGameOverReason()) {
@@ -24,10 +23,10 @@ public:
 		}
 
 		glBegin(GL_QUADS);
-		glTexCoord2f(1.0, 1.0); glColor3f(1.0, 0.1, 0.1);  glVertex2f(2 * GameData::WINDOW_WIDTH / 5, 2 * GameData::WINDOW_HEIGHT / 5);
-		glTexCoord2f(1.0, 0.0); glColor3f(0.1, 1.0, 0.1);  glVertex2f(2 * GameData::WINDOW_WIDTH/5, 3 * GameData::WINDOW_HEIGHT / 5);
-		glTexCoord2f(0.0, 0.0); glColor3f(1.0, 1.0, 0.1); glVertex2f(3 * GameData::WINDOW_WIDTH / 5, 3 * GameData::WINDOW_HEIGHT / 5);
-		glTexCoord2f(0.0, 1.0); glColor3f(0.0, 0.1, 1.0); glVertex2f(3 * GameData::WINDOW_WIDTH / 5, 2 * GameData::WINDOW_HEIGHT / 5);
+		glTexCoord2f(1.0, 1.0); glColor3f(1.0, 0.1, 0.1);  glVertex2f(2 * GameState::WINDOW_WIDTH / 5, 2 * GameState::WINDOW_HEIGHT / 5);
+		glTexCoord2f(1.0, 0.0); glColor3f(0.1, 1.0, 0.1);  glVertex2f(2 * GameState::WINDOW_WIDTH/5, 3 * GameState::WINDOW_HEIGHT / 5);
+		glTexCoord2f(0.0, 0.0); glColor3f(1.0, 1.0, 0.1); glVertex2f(3 * GameState::WINDOW_WIDTH / 5, 3 * GameState::WINDOW_HEIGHT / 5);
+		glTexCoord2f(0.0, 1.0); glColor3f(0.0, 0.1, 1.0); glVertex2f(3 * GameState::WINDOW_WIDTH / 5, 2 * GameState::WINDOW_HEIGHT / 5);
 		glEnd();
 
 		gameOverOptions.display_menu();
@@ -46,9 +45,9 @@ public:
 		Colors::getInstance()->setColor(Shade::Black);
 		glBegin(GL_POLYGON);
 		glVertex2i((0), (0));
-		glVertex2i((0), (GameData::WINDOW_HEIGHT));
-		glVertex2i((GameData::WINDOW_WIDTH), (GameData::WINDOW_HEIGHT));
-		glVertex2i((GameData::WINDOW_WIDTH), (0));
+		glVertex2i((0), (GameState::WINDOW_HEIGHT));
+		glVertex2i((GameState::WINDOW_WIDTH), (GameState::WINDOW_HEIGHT));
+		glVertex2i((GameState::WINDOW_WIDTH), (0));
 		glEnd();
 	}
 

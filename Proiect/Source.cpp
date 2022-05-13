@@ -5,7 +5,7 @@
 #include "Ground.h"
 #include "EnemyCar.h"
 #include "Player.h"
-#include "GameData.h"
+#include "GameState.h"
 #include "GameState.h"
 #include "HUD.h"
 #include "GameOver.h"
@@ -13,7 +13,7 @@
 #include "Utils2.h"
 #include "Textures.h"
 
-bool debugging = true;
+bool debugging = false;
 double delay_politie = 10;
 
 void changeSize(int w, int h)
@@ -46,6 +46,8 @@ std::vector<movingObject *> toDrawObjects;
 void renderScene(void) {
 
 	switch (GameState::getInstance()->getState()) {
+	case State::Delivering:
+	case State::Selecting_Order:
 	case State::Main_Menu:
 	case State::Started: {	
 
@@ -183,7 +185,6 @@ void renderScene(void) {
 
 void processNormalKeys(unsigned char key, int xx, int yy)
 {
-
 	switch (GameState::getInstance()->getState()) {
 	case State::Main_Menu: {
 		switch (key) {
@@ -204,6 +205,8 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 		}
 		break;
 	}
+	case State::Delivering:
+	case State::Selecting_Order:
 	case State::Started: {
 		switch (key) {
 		case 'l':
@@ -211,6 +214,14 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 			break;
 		case 'v':
 			Player::getInstance()->changeCamera();
+			break;
+		case 'y':
+			GameState::getInstance()->toggleOrders();
+			break;
+		case 13:
+			if (GameState::getInstance()->getState() == State::Selecting_Order) {
+				GameState::getInstance()->chooseOrder();
+			}
 			break;
 		}
 		if (key == 27)
@@ -244,6 +255,18 @@ void processSpecialKeys(int key, int xx, int yy) {
 			}
 			break;
 		}
+		case State::Selecting_Order: {
+			switch (key){
+			case GLUT_KEY_UP:
+				GameState::getInstance()->decreaseSelectedOrder();
+				break;
+			case GLUT_KEY_DOWN:
+				GameState::getInstance()->increaseSelectedOrder();
+				break;
+			}
+			break;
+		}
+		case State::Delivering:
 		case State::Started: {
 			switch (key) {
 			case GLUT_KEY_LEFT:
@@ -267,6 +290,8 @@ int main(int argc, char** argv) {
 	srand(time(0));
 	estePolitie = 0;
 	urmeazaPolitie = 0;
+	GameState::getInstance()->addOrder(1, "./cold.jpg", 10);
+	GameState::getInstance()->addOrder(1, "./cold.jpg", 10);
 	GameOver::initialiseGameOverOptions();
 	MainMenu::initialise();
 	resetGame();
@@ -285,7 +310,7 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT);
+	glutInitWindowSize(GameState::WINDOW_WIDTH, GameState::WINDOW_HEIGHT);
 	glutCreateWindow("Livreaza comanda");
 
 	// register callbacks
