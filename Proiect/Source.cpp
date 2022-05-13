@@ -189,7 +189,7 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 	case State::Main_Menu: {
 		switch (key) {
 		case 13:
-			GameOver::handleGameOver();
+			MainMenu::handle();
 			break;
 		case 'v':
 			Player::getInstance()->changeCamera();

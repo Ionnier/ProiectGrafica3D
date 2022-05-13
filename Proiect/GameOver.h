@@ -54,6 +54,7 @@ public:
 	static void initialiseGameOverOptions() {
 		std::vector<std::string> optiuni;
 		optiuni.push_back("Retry");
+		optiuni.push_back("Main Menu");
 		optiuni.push_back("Exit");
 		OptiuniOnScreen aux(optiuni, 500, 250);
 		gameOverOptions = aux;
@@ -74,6 +75,10 @@ public:
 			break;
 		}
 		case 1: {
+			GameState::getInstance()->setMainMenu();
+			break;
+		}
+		case 2: {
 			exit(0);
 			break;
 		}
