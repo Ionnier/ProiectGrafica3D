@@ -30,7 +30,7 @@ private:
         RenderString(10, WINDOW_HEIGHT - 150 * (i + 1) + 40, comenzi[i].getNume(), Shade::White);
         RenderString(10, WINDOW_HEIGHT - 150 * (i + 1) + 10, std::to_string(comenzi[i].getCastig()), Shade::White);
 
-        Textures::getInstance()->enableTexture("./Texturi/cold.jpg");
+        Textures::getInstance()->enableTexture(comenzi[i].getTextura());
         glBegin(GL_QUADS);
         glTexCoord2f(1.0, 1.0); glColor3f(1.0, 0.1, 0.1);  glVertex2f(left_x + 75, (left_y + right_y) / 2);
         glTexCoord2f(1.0, 0.0); glColor3f(0.1, 1.0, 0.1);  glVertex2f(left_x + 75, right_y);

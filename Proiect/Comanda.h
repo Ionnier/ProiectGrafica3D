@@ -1,5 +1,6 @@
 #pragma once
 #include "Textures.h"
+#include <algorithm>
 class Comanda {
 	int id;
 	int castig;
@@ -9,8 +10,10 @@ public:
 	int getId() { return id; }
 	std::string getNume() { return nume; }
 	int getCastig() { return castig; }
+	std::string getTextura() { return textura; }
 	Comanda(int id, std::string nume, int castig) : id(id), nume(nume), castig(castig) {
-		textura = "./Texturi/" + nume;
+		std::transform(nume.begin(), nume.end(), nume.begin(), ::tolower);
+		textura = "./Texturi/" + nume + ".jpg";
 		Textures::getInstance()->addTexture(textura);
 	}
 };

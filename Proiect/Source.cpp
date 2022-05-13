@@ -290,8 +290,9 @@ int main(int argc, char** argv) {
 	srand(time(0));
 	estePolitie = 0;
 	urmeazaPolitie = 0;
-	GameState::getInstance()->addOrder(1, "./cold.jpg", 10);
-	GameState::getInstance()->addOrder(1, "./cold.jpg", 10);
+	GameState::getInstance()->addOrder(1, "Burger", 10);
+	GameState::getInstance()->addOrder(2, "Pasta", 10);
+	GameState::getInstance()->addOrder(3, "Pizza", 10);
 	GameOver::initialiseGameOverOptions();
 	MainMenu::initialise();
 	resetGame();
