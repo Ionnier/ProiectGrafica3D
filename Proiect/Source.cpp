@@ -11,6 +11,7 @@
 #include "GameOver.h"
 #include "SeparatoroWhiteLines.h"
 #include "Utils2.h"
+#include "Textures.h"
 #include "Sun.h"
 
 
@@ -158,6 +159,8 @@ void renderScene(void) {
 	}
 	case State::Game_Over: {
 		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHT1);
 		HUD::drawGameOver();
 		break;
 	}
@@ -256,7 +259,6 @@ int main(int argc, char** argv) {
 	MainMenu::initialise();
 	resetGame();
 	GameState::getInstance()->setMainMenu();
-	load_sun();
 	// Create Separator lines
 	float drawObjects = Ground::furtherestPoint;
 	while (drawObjects <= 10.0f) {

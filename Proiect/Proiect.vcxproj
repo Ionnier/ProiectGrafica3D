@@ -160,6 +160,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeparatoroWhiteLines.h" />
     <ClInclude Include="Sun.h" />
+    <ClInclude Include="Textures.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Utils2.h" />
   </ItemGroup>
