@@ -7,14 +7,15 @@
 #include "Player.h"
 #include "GameState.h"
 #include "GameState.h"
-#include "HUD.h"
 #include "GameOver.h"
 #include "SeparatoroWhiteLines.h"
-#include "Utils2.h"
 #include "Textures.h"
+#include "MainMenu.h"
 #include "FileComunicator.h"
+#include "HUD.h"
+#include "Utils2.h"
 
-bool debugging = true;
+bool debugging = false;
 double delay_politie = 10;
 
 void changeSize(int w, int h)
@@ -53,7 +54,7 @@ void renderScene(void) {
 	case State::Main_Menu:
 	case State::Started: {	
 
-		if(GameState::getInstance()->temperatura_mancare>0 && GameState::getInstance()->getState() == State::Delivering) GameState::getInstance()->temperatura_mancare -= 0.0005;
+		if(GameState::getInstance()->temperatura_mancare>0 && GameState::getInstance()->getState() == State::Delivering) GameState::getInstance()->temperatura_mancare -= 0.005;
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);
 
@@ -140,6 +141,7 @@ void renderScene(void) {
 				choordinates_vector car_pos = car->get_position();
 				if (position_in_range(playerX, car_pos.x, 2)) {
 					if (position_in_range(INITIAL_Z, car_pos.z, 0.5) && !debugging) {
+						FileComunicator::getInstance()->sendCrashedOrder();
 						GameState::getInstance()->setGameOver(Reason::Crash);
 						toDrawObjects.clear();
 						break;
@@ -225,9 +227,18 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 		case 13:
 			if (GameState::getInstance()->getState() == State::Selecting_Order) {
 				GameState::getInstance()->chooseOrder();
+				FileComunicator::getInstance()->sendStartingDeliver();
+			}
+			break;
+		case 'p': {
+			if (GameState::getInstance()->getState() == State::Started) {
+				FileComunicator::getInstance()->sendOrderRequest();
 			}
 			break;
 		}
+		}
+		
+			
 		if (key == 27)
 			exit(0);
 		break;
@@ -317,8 +328,6 @@ int main(int argc, char** argv) {
 	urmeazaPolitie = 0;
 	GameOver::initialiseGameOverOptions();
 	MainMenu::initialise();
-	GameState::getInstance()->addOrder(10, "Pizza", 10);
-	GameState::getInstance()->addOrder(10, "Pizza", 10);
 	resetGame();
 	GameState::getInstance()->setMainMenu();
 	// Create Separator lines

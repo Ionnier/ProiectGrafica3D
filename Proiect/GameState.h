@@ -26,6 +26,7 @@ private:
     int activeOrder;
     bool enteringPassword = false;
     bool isLogin;
+    std::string JWT;
 
     void drawOrder(int i) {
         float left_x = 0;
@@ -74,6 +75,9 @@ public:
             instance = new GameState;
         return instance;
     }
+    int getActiveOrderId() {
+        return comenzi[0].getId();
+    }
     State getState() {
         return this->current_state;
     }
@@ -121,6 +125,8 @@ public:
         resetGame();
         this->game_over_reason = Reason::None;
         this->current_state = State::Started;
+        this->status = Status::FREE_ROAM;
+        clearOrders();
         //GameState::getInstance()->prepare_time_start();
     }
 
@@ -227,6 +233,9 @@ public:
             userName.push_back(c);
         }
     }
+    
+    bool isLoggedIn() { return JWT.size() > 0; }
+    void setJWT(std::string JWT) { this->JWT = JWT; }
 };
 GameState* GameState::instance = 0;
 float GameState::WINDOW_HEIGHT = 720.0f;

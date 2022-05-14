@@ -41,7 +41,7 @@ private:
 	}
 
 	static void drawProgress() {
-		GameState::getInstance()->progres += movingObject::move_speed;
+		GameState::getInstance()->progres += movingObject::move_speed * 20;
 		double left_pos = double(GameState::WINDOW_WIDTH / 2) - 300;
 
 		glPushMatrix();
@@ -51,6 +51,8 @@ private:
 			GameState::getInstance()->progres = 0;
 			//score += temp_mancare;
 			GameState::getInstance()->temperatura_mancare = 100;
+			FileComunicator::getInstance()->sendDelivered();
+			GameState::getInstance()->setStartGame();
 		}
 
 		Colors::getInstance()->setColor(Shade::Yellow);

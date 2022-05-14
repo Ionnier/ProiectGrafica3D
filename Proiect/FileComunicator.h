@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include "ProcessLauncher.h"
+#include <string>
 class FileComunicator {
 private:
     static FileComunicator* instance;
@@ -80,6 +81,8 @@ public:
         f >> data;
         if (data == "JWT") {
             f >> data;
+            GameState::getInstance()->setJWT(data);
+            MainMenu::initialise();
         }
         if (data == "ORDER" && GameState::getInstance()->getState() == State::Started) {
             int id;
@@ -115,6 +118,41 @@ public:
         sendData(data);
     }
 
+    void sendOrderRequest() {
+        std::string data = "GETORDER";
+        sendData(data);
+    }
+
+    void sendCrashedOrder() {
+        if (GameState::getInstance()->getState() == State::Delivering) {
+            int id = GameState::getInstance()->getActiveOrderId();
+            std::string data = "";
+            data += "CRASHED ";
+            data += std::to_string(id);
+            sendData(data);
+        }
+    }
+
+    void sendStartingDeliver() {
+        if (GameState::getInstance()->getState() == State::Delivering) {
+            int id = GameState::getInstance()->getActiveOrderId();
+            std::string data = "";
+            data += "CHOSEN ";
+            data += std::to_string(id);
+            sendData(data);
+        }
+    }
+
+
+    void sendDelivered() {
+        if (GameState::getInstance()->getState() == State::Delivering) {
+            int id = GameState::getInstance()->getActiveOrderId();
+            std::string data = "";
+            data += "DELIVERED ";
+            data += std::to_string(id);
+            sendData(data);
+        }
+    }
 
 };
 FileComunicator* FileComunicator::instance = NULL;

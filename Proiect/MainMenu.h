@@ -17,10 +17,16 @@ public:
 
 	static void initialise() {
 		std::vector<std::string> optiuni;
-		optiuni.push_back("Play");
-		optiuni.push_back("Login");
-		optiuni.push_back("Register");
-		optiuni.push_back("Exit");
+		if (GameState::getInstance()->isLoggedIn()) {
+			optiuni.push_back("Play");
+			optiuni.push_back("Exit");
+		}
+		else {
+			optiuni.push_back("Play");
+			optiuni.push_back("Login");
+			optiuni.push_back("Register");
+			optiuni.push_back("Exit");
+		}
 		OptiuniOnScreen aux(optiuni, 500, 250);
 		mainMenuOptions = aux;
 	}
@@ -34,23 +40,37 @@ public:
 	}
 
 	static void handle() {
-		switch (mainMenuOptions.get_current_choice()) {
-		case 0: {
-			GameState::getInstance()->setStartGame();
-			break;
+		if (!GameState::getInstance()->isLoggedIn()) {
+			switch (mainMenuOptions.get_current_choice()) {
+			case 0: {
+				GameState::getInstance()->setStartGame();
+				break;
+			}
+			case 1: {
+				GameState::getInstance()->setEnteringText(true);
+				break;
+			}
+			case 2: {
+				GameState::getInstance()->setEnteringText(false);
+				break;
+			}
+			case 3: {
+				break;
+			}
+			}
 		}
-		case 1: {
-			GameState::getInstance()->setEnteringText(true);
-			break;
+		else {
+			switch (mainMenuOptions.get_current_choice()) {
+			case 0: {
+				GameState::getInstance()->setStartGame();
+				break;
+			}
+			case 1: {
+				break;
+			}
+			}
 		}
-		case 2: {
-			GameState::getInstance()->setEnteringText(false);
-			break;
-		}
-		case 3: {
-			break;
-		}
-		}
+		
 
 	}
 };
