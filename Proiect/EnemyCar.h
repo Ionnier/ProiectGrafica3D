@@ -22,7 +22,7 @@ public:
 	}
 	EnemyCar(const EnemyCar& aux) : initialX(initialX), initialY(initialY), initialZ(initialZ) {
 		positionModifier = aux.positionModifier;
-		flash_counter = 100;
+		flash_counter = 10;
 		flashuri_aprinse = false;
 	}
 
@@ -43,10 +43,10 @@ public:
 			this->flash_counter -= 0.05;
 			if (this->flash_counter < 0) {
 				if (this->flashuri_aprinse) {
-					this->flash_counter = 50;
+					this->flash_counter = 2.5;
 				}
 				else {
-					this->flash_counter = 100;
+					this->flash_counter = 5;
 				}
 				this->flashuri_aprinse = !this->flashuri_aprinse;
 			}
