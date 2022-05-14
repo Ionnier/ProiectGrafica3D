@@ -74,7 +74,7 @@ private:
 		std::stringstream stream;
 		stream << std::fixed << std::setprecision(2) << temperatura_mancare;
 		std::string var = "Temperatura mancare: " + stream.str();
-		RenderString(20.0f, 5.0f, var.c_str());
+		RenderString(20.0f, 5.0f, var.c_str(), Shade::White);
 		glPushMatrix();
 		Colors::getInstance()->setColor(Shade::Black);
 		glRecti(15, 0, 270, 20);
@@ -85,10 +85,18 @@ public:
 	static void drawHUD() {
 		switchTo2D();
 
-		foodTemperature();
-		drawProgress();
+		if (GameState::getInstance()->getState() == State::Delivering) {
+			foodTemperature();
+			drawProgress();
+		}
+
+		if (GameState::getInstance()->getState() == State::Started 
+			|| GameState::getInstance()->getState() == State::Delivering
+			|| GameState::getInstance()->getState() == State::Selecting_Order) {
+			GameState::getInstance()->drawOrders();
+		}
+
 		drawCurrentStatus();
-		GameState::getInstance()->drawOrders();
 
 		resetTo3D();
 	}

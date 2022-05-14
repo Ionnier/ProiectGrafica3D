@@ -318,6 +318,8 @@ int main(int argc, char** argv) {
 	urmeazaPolitie = 0;
 	GameOver::initialiseGameOverOptions();
 	MainMenu::initialise();
+	GameState::getInstance()->addOrder(10, "Pizza", 10);
+	GameState::getInstance()->addOrder(10, "Pizza", 10);
 	resetGame();
 	GameState::getInstance()->setMainMenu();
 	// Create Separator lines
