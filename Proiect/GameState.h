@@ -63,6 +63,9 @@ private:
         }
     }
 public:
+    double total_drum = 10000;
+    double progres = 0;
+    double temperatura_mancare = 100;
 
     static float WINDOW_HEIGHT;
     static float WINDOW_WIDTH;

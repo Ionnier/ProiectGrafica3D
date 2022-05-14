@@ -9,10 +9,6 @@
 #include <iomanip>
 #include <string>
 
-extern double temperatura_mancare;
-double total_drum = 10000;
-double progres = 0;
-
 class HUD {
 private:
 	static void switchTo2D() {
@@ -45,16 +41,16 @@ private:
 	}
 
 	static void drawProgress() {
-		progres += movingObject::move_speed;
+		GameState::getInstance()->progres += movingObject::move_speed;
 		double left_pos = double(GameState::WINDOW_WIDTH / 2) - 300;
 
 		glPushMatrix();
-		double pozitie_progres = left_pos + (600 * progres / total_drum);
+		double pozitie_progres = left_pos + (600 * GameState::getInstance()->progres / GameState::getInstance()->total_drum);
 
-		if (progres / total_drum > 1) {
-			progres = 0;
+		if (GameState::getInstance()->progres / GameState::getInstance()->total_drum > 1) {
+			GameState::getInstance()->progres = 0;
 			//score += temp_mancare;
-			temperatura_mancare = 100;
+			GameState::getInstance()->temperatura_mancare = 100;
 		}
 
 		Colors::getInstance()->setColor(Shade::Yellow);
@@ -72,7 +68,7 @@ private:
 
 	static void foodTemperature() {
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(2) << temperatura_mancare;
+		stream << std::fixed << std::setprecision(2) << GameState::getInstance()->temperatura_mancare;
 		std::string var = "Temperatura mancare: " + stream.str();
 		RenderString(20.0f, 5.0f, var.c_str(), Shade::White);
 		glPushMatrix();

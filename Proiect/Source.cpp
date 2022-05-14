@@ -16,7 +16,6 @@
 
 bool debugging = true;
 double delay_politie = 10;
-double temperatura_mancare = 100;
 
 void changeSize(int w, int h)
 {
@@ -54,7 +53,7 @@ void renderScene(void) {
 	case State::Main_Menu:
 	case State::Started: {	
 
-		if(temperatura_mancare>0) temperatura_mancare -= 0.0005;
+		if(GameState::getInstance()->temperatura_mancare>0 && GameState::getInstance()->getState() == State::Delivering) GameState::getInstance()->temperatura_mancare -= 0.0005;
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);
 
