@@ -4,24 +4,37 @@
 class Radio {
 private:
     static Radio* instance;
-    ProcessLauncher proces_radio;
-    bool initialize_radio() {
-        proces_radio.stopProcess();
-        proces_radio = *(new ProcessLauncher("", "python ./radio.py http://asculta.radiotaraf.ro:7100/"));
-        proces_radio.launchProcess();
-        printf("%d\n", proces_radio.isActive());
-        return proces_radio.isActive();
+    ProcessLauncher *proces_radio;
+    int canal_curent;
+    void initialize_radio() {
+        proces_radio = NULL;
+        canal_curent = 0;
     }
 
 public:
-    void schimba_canal(int canal) {
-        switch (canal) {
+    void schimba_canal() {
+        if (proces_radio != NULL) {
+            proces_radio->stopProcess();
+            delete proces_radio;
+            proces_radio = NULL;
+        }
 
+        canal_curent += 1;
+        canal_curent = canal_curent % 3;
+        switch (canal_curent) {
+        case 1:
+            proces_radio = new ProcessLauncher("", "python ./radio.py http://asculta.radiotaraf.ro:7100/");
+            proces_radio->launchProcess();
+            break;
+        case 2:
+            proces_radio = new ProcessLauncher("", "python ./radio.py https://live.kissfm.ro/kissfm.aacp");
+            proces_radio->launchProcess();
+            break;
         }
     }
 
     bool stop_radio() {
-        return proces_radio.stopProcess();
+        return proces_radio->stopProcess();
     }
 
     virtual ~Radio() {
