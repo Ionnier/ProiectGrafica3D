@@ -59,7 +59,7 @@ void renderScene(void) {
 
 		glEnable(GL_LIGHT1);
 		GLfloat pozitial1[] = { 0.0, 20, -30, 1.0 };
-		GLfloat galben[] = {0.2, 0.2, 0.0, 0.5 };
+		GLfloat galben[] = {0.5, 0.5, 0.0, 0.5 };
 		glLightfv(GL_LIGHT1, GL_POSITION, pozitial1);
 		glLightfv(GL_LIGHT1, GL_SPECULAR, galben);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, galben);
