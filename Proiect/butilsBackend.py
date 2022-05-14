@@ -4,7 +4,7 @@ import pathlib
 
 sendName = "serverSays.txt"
 
-baseSite = "http://localhost:3000"
+baseSite = "https://proiectgrafica.herokuapp.com"
 
 JWT = None
 
