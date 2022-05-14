@@ -22,5 +22,6 @@
     <ClInclude Include="Comanda.h" />
     <ClInclude Include="FileComunicator.h" />
     <ClInclude Include="ProcessLauncher.h" />
+    <ClInclude Include="Radio.h" />
   </ItemGroup>
 </Project>

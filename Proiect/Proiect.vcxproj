@@ -160,6 +160,7 @@
     <ClInclude Include="movingObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ProcessLauncher.h" />
+    <ClInclude Include="Radio.h" />
     <ClInclude Include="SeparatoroWhiteLines.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utils.h" />

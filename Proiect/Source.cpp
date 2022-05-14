@@ -14,6 +14,7 @@
 #include "FileComunicator.h"
 #include "HUD.h"
 #include "Utils2.h"
+#include "Radio.h"
 
 bool debugging = false;
 double delay_politie = 10;
@@ -323,6 +324,7 @@ void function() {
 std::thread thread(function);
 
 int main(int argc, char** argv) {
+	Radio::getInstance();
 	srand(time(0));
 	estePolitie = 0;
 	urmeazaPolitie = 0;
