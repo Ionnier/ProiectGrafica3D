@@ -237,6 +237,12 @@ void processNormalKeys(unsigned char key, int xx, int yy)
 			}
 			break;
 		}
+		case 8: {
+			if (GameState::getInstance()->getState() == State::Selecting_Order) {
+				FileComunicator::getInstance()->sendBlackList(GameState::getInstance()->removeOrder());
+			}
+			break;
+		}
 		}
 		
 			

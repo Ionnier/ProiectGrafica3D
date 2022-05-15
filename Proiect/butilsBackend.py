@@ -49,27 +49,51 @@ def handleLogin(data):
             prep_data=f"JWT {dictionary['token']}"
             global JWT
             JWT = dictionary['token']
-            print(JWT)
             sendData(prep_data)
     except Exception as e:
         print(e)
         pass
 
+blaclistedIds = []
+
+orders = []
+
+def getOrders():
+    if JWT is None:
+        return
+    r = requests.get(f"{baseSite}/api/v1/orders", headers={
+        'Authorization': f'Bearer {JWT}'
+    })
+    dictionary = r.json()
+    if(r.status_code == 200):
+        global orders
+        orders = dictionary['data']['orders']
+
 def sendOrder():
     if JWT is None:
         return
     try:
-        r = requests.get(f"{baseSite}/api/v1/orders", headers={
-            'Authorization': f'Bearer {JWT}'
-        })
-        print(r.text)
-        dictionary = r.json()
-        if(r.status_code == 200):
-            prep_data=f"ORDER {dictionary['data']['order']['idOrder']} {dictionary['data']['product']['productName']} {dictionary['data']['order']['castig']}"
-            sendData(prep_data)
+        if (len(orders) == 0 or sum([(not x['idOrder'] in blaclistedIds) for x in orders]) == 0):
+            getOrders()
+        print(blaclistedIds)
+        for elem in orders:
+            if (elem['idOrder'] in blaclistedIds):
+                continue
+            r = requests.get(f"{baseSite}/api/v1/orders/{elem['idOrder']}", headers={
+                'Authorization': f'Bearer {JWT}'
+            })
+            dictionary = r.json()
+            if(r.status_code == 200 and dictionary['data']['order']['orderStatus'] == 'Created'):
+                prep_data=f"ORDER {elem['idOrder']} {elem['idProductProduct']['productName']} {elem['castig']}"
+                sendData(prep_data)
+                break
     except Exception as e:
         print(e)
         pass
+
+def prepBlacklist(data):
+    global blaclistedIds
+    blaclistedIds.append(int(data.split(" ")[1]))
 
 def handleDelivered(data):
     if JWT is None:

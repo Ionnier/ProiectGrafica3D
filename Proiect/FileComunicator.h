@@ -90,11 +90,17 @@ public:
             f >> data;
             int castig;
             f >> castig;
+            sendBlackList(id);
             GameState::getInstance()->addOrder(id, data, castig);
         }
         f.close();
         remove("serverSays.txt");
         return data;
+    }
+
+    void sendBlackList(int id) {
+        std::string data = "BLACKLIST " + std::to_string(id);
+        sendData(data);
     }
 
     void sendGetRequest() {

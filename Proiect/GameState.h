@@ -172,6 +172,12 @@ public:
             activeOrder = 0;
         }
     }
+    int removeOrder() {
+        int id = comenzi[activeOrder].getId();
+        decreaseSelectedOrder();
+        comenzi.erase(comenzi.begin() + activeOrder);
+        return id;
+    }
     void increaseSelectedOrder() {
         activeOrder = (activeOrder + 1) % comenzi.size();
     }
@@ -192,7 +198,6 @@ public:
         RenderString(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 15, "Password: " + asd, Shade::Black);
 
     }
-
     void commText(std::string type) {
         std::string fileName = "clientSays";
         std::ofstream f;

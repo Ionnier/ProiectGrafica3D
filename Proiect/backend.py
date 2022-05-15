@@ -31,6 +31,8 @@ while True:
                     handleCrashed(data)
                 if(method == "GETORDER"):
                     sendOrder()
+                if(method == "BLACKLIST"):
+                    prepBlacklist(data)
             pathlib.Path(file).unlink()
         except FileNotFoundError:
             pass
