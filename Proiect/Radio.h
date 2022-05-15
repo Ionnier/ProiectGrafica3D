@@ -20,7 +20,7 @@ public:
         }
 
         canal_curent += 1;
-        canal_curent = canal_curent % 3;
+        canal_curent = canal_curent % 4;
         switch (canal_curent) {
         case 1:
             proces_radio = new ProcessLauncher("", "python ./radio.py http://asculta.radiotaraf.ro:7100/");
@@ -28,6 +28,10 @@ public:
             break;
         case 2:
             proces_radio = new ProcessLauncher("", "python ./radio.py https://live.kissfm.ro/kissfm.aacp");
+            proces_radio->launchProcess();
+            break;
+        case 3:
+            proces_radio = new ProcessLauncher("", "python ./radio.py http://petrecere.fmradiomanele.ro:8123/");
             proces_radio->launchProcess();
             break;
         }

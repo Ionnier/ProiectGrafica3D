@@ -154,6 +154,12 @@ void renderScene(void) {
 				if (delay_politie < 0 && dynamic_cast<EnemyCar*>(toDrawObjects[i]) != NULL) {
 					delay_politie = 10;
 					if (estePolitie) {
+						if (movingObject::move_speed * 1250 > 70) {
+							FileComunicator::getInstance()->sendCrashedOrder();
+							GameState::getInstance()->setGameOver(Reason::Police);
+							toDrawObjects.clear();
+							break;
+						}
 						estePolitie = false;
 						urmeazaPolitie = false;
 					}
@@ -308,10 +314,10 @@ void processSpecialKeys(int key, int xx, int yy) {
 				Player::getInstance()->goRight();
 				break;
 			case GLUT_KEY_UP:
-				movingObject::move_speed += 0.1f;
+				movingObject::move_speed += 0.004f;
 				break;
 			case GLUT_KEY_DOWN:
-				movingObject::move_speed -= 0.1f;
+				movingObject::move_speed -= 0.004f;
 				break;
 			case GLUT_KEY_PAGE_UP:
 				Radio::getInstance()->schimba_canal();

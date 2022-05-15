@@ -17,4 +17,4 @@ public:
 		return(empty);
 	}
 };
-float movingObject::move_speed = 0.1f;
+float movingObject::move_speed = 0.004f;

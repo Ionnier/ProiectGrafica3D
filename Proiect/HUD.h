@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#include <math.h>
 
 class HUD {
 private:
@@ -79,9 +80,23 @@ private:
 		glPopMatrix();
 	}
 
+	static void speedometer() {
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(2) << abs(movingObject::move_speed * 1250);
+		std::string var = "Viteza: " + stream.str() + " km/h";
+		RenderString(1000, 5.0f, var.c_str(), Shade::Black);
+		glPushMatrix();
+		Colors::getInstance()->setColor(Shade::Black);
+		glRecti(950, 0, 1200, 25);
+		glPopMatrix();
+	}
+
+
 public:
 	static void drawHUD() {
 		switchTo2D();
+
+		speedometer();
 
 		if (GameState::getInstance()->getState() == State::Delivering) {
 			foodTemperature();
