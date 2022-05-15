@@ -1,3 +1,6 @@
 [submodule "Proiect3DServer"]
 	path = Proiect3DServer
 	url = https://github.com/Ionnier/Proiect3DServer
+[submodule "Proiect3DFrontEnd"]
+	path = Proiect3DFrontEnd
+	url = https://github.com/Ionnier/Proiect3DFrontEnd
