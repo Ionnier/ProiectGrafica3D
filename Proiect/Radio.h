@@ -53,6 +53,10 @@ public:
             
         return instance;
     }
+
+    int getStation() {
+        return canal_curent;
+    }
 };
 
 Radio* Radio::instance = NULL;

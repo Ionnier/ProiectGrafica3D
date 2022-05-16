@@ -9,6 +9,10 @@
 #include <iomanip>
 #include <string>
 #include <math.h>
+#include "Radio.h"	
+
+double radio_timer = 0.1;
+int decalaj = 0;
 
 class HUD {
 private:
@@ -84,11 +88,64 @@ private:
 		std::stringstream stream;
 		stream << std::fixed << std::setprecision(2) << abs(movingObject::move_speed * 1250);
 		std::string var = "Viteza: " + stream.str() + " km/h";
-		RenderString(1000, 5.0f, var.c_str(), Shade::Black);
+		RenderString(1000, 5.0f, var.c_str(), Shade::White);
 		glPushMatrix();
 		Colors::getInstance()->setColor(Shade::Black);
 		glRecti(950, 0, 1200, 25);
 		glPopMatrix();
+	}
+
+	static void deseneaza_radio() {
+		glColor3f(0.55, 0.788, 0.451);
+		std::string radio = "Radio: ";
+		std::string canal = "";
+		int id_canal = Radio::getInstance()->getStation();
+		if (id_canal > 3) {
+			id_canal = 0;
+		}
+		switch (id_canal) {
+		case 0:
+			canal = "oprit";
+			break;
+		case 1:
+			canal = "Taraf FM";
+			break;
+		case 2:
+			canal = "Kiss FM";
+			break;
+		case 3:
+			canal = "Radio Muzica Populara";
+			break;
+		default:
+			canal = "oprit";
+			break;
+		}
+		int dim_display = 10;
+		radio_timer += 0.01;
+		if (radio_timer > 10) {
+			radio_timer = 0;
+			decalaj += 1;
+			if (decalaj >= dim_display) {
+				decalaj = -(int)canal.length();
+			}
+		}
+		std::string canal_decalat = "";
+		for (int i = 0; i < decalaj; i++) {
+			canal_decalat += " ";
+		}
+		canal_decalat += canal;
+		if (decalaj >= 0) {
+			radio = radio + canal_decalat.substr(0, dim_display);
+		}
+		else {
+			if (canal.length() > dim_display) {
+				radio = radio + canal_decalat.substr(-decalaj, dim_display);
+			}
+			else {
+				radio = radio + canal_decalat.substr(-decalaj, canal_decalat.length());
+			}
+		}
+		RenderString(500, 5, radio.c_str(), Shade::Black)
 	}
 
 
@@ -97,6 +154,7 @@ public:
 		switchTo2D();
 
 		speedometer();
+		deseneaza_radio();
 
 		if (GameState::getInstance()->getState() == State::Delivering) {
 			foodTemperature();
@@ -140,4 +198,5 @@ public:
 
 		resetTo3D();
 	}
+
 };
