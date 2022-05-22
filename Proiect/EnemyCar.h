@@ -32,12 +32,12 @@ public:
 				glPushMatrix();
 				Colors::getInstance()->setColor(Shade::Yellow);
 				glTranslatef(initialX - 0.25, initialY + 0.2, initialZ + 0.5 + positionModifier);
-				glutSolidCube(0.2);
+				glutSolidSphere(0.2, 20, 20);
 				glPopMatrix();
 				glPushMatrix();
 				Colors::getInstance()->setColor(Shade::Yellow);
 				glTranslatef(initialX + 0.25, initialY + 0.2, initialZ + 0.5 + positionModifier);
-				glutSolidCube(0.2);
+				glutSolidSphere(0.2, 20, 20);
 				glPopMatrix();
 			}
 			this->flash_counter -= 0.05;
