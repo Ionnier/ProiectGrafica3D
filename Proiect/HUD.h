@@ -145,7 +145,7 @@ private:
 				radio = radio + canal_decalat.substr(-decalaj, canal_decalat.length());
 			}
 		}
-		RenderString(500, 5, radio.c_str(), Shade::Black);
+		RenderString(25, 5, radio.c_str(), Shade::White);
 	}
 
 
